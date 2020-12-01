@@ -6,8 +6,6 @@
  * @see https://stitcher.io/blog/attributes-in-php-8
  */
 
-namespace App;
-
 class Route
 {
     // example of a Route class with GET as default request method
@@ -21,14 +19,16 @@ class Route
 #[Route('/users')]
 class UserController
 {
+    /**
+     * dummy method 
+     */
     public function getUsers()
     {
-        var_dump(ReflectionMethod::getAttributes());
-        var_dump($this);
+        return [];
     }
 }
 
-$reflectionClass = new \ReflectionClass(UserController::class);
+$reflectionClass = new ReflectionClass(UserController::class);
 $attributes = $reflectionClass->getAttributes(Route::class);
 
 // lets parse all class attributes
@@ -36,6 +36,7 @@ $parsedAttributes = [];
 foreach($attributes as $attribute) {
     $className = $attribute->getName();
     if (class_exists($className)) {
+        // $className will be the fully qualified class name
         $parsedAttributes = new $className(...$attribute->getArguments());
     }
 }
